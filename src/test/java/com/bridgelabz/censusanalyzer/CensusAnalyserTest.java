@@ -8,6 +8,8 @@ public class CensusAnalyserTest {
 
 	private static final String INDIA_CENSUS_CSV_FILE_PATH = "./src/test/resources/IndianStatesCensus.csv";
 	private static final String WRONG_CSV_FILE_PATH = "./src/main/resources/IndianStatesCensusData.csv";
+	private static final String INCORRECT_FILE_FORMAT = "./src/test/resources/CensusDataInWrongFormat.txt";
+
 	
 	@Test
 	public void givenIndianCensusCSVFile_WhenCorrectPath_ShouldReturnCorrectRecords() {
@@ -32,6 +34,20 @@ public class CensusAnalyserTest {
 			e.printStackTrace();
 		}
 	}
+	@Test
+    public void givenIndianCensusCSVFile_WhenCorrectPathButWrongFileFormat_ShouldThrowException() {
+		
+		try {
+			CensusAnalyser censusAnalyser = new CensusAnalyser();
+			ExpectedException exceptionRule = ExpectedException.none();
+			exceptionRule.expect(CensusAnalyserException.class);
+			censusAnalyser.loadIndiaCensusData(INCORRECT_FILE_FORMAT);
+		} 
+		catch (CensusAnalyserException e) {
+			Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_INCORRECT_FILE_FORMAT, e.type);
+			e.printStackTrace();
+		}
+    }
 	
 
 }
